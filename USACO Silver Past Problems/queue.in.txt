@@ -1,0 +1,7 @@
+6
+add 5
+add 3
+add 7
+get
+get
+add 4
