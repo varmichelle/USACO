@@ -54,7 +54,6 @@ public class gravity {
 	// dfs and push all points reachable with the same flip to the queue
 	public static void dfs(Struct current, int flip) {
 		current = fall(current, dir(flip));
-		System.out.println("current: " + current.x + " " + current.y);
 		if (current.x != -1 && current.y != -1) {
 			// left
 			if (current.x > 0 && grid[current.x - 1][current.y] != '#') {
@@ -87,11 +86,11 @@ public class gravity {
 	// return the point the captain falls to due to gravity (-1,-1) if off the grid
 	public static Struct fall(Struct s, int dir) {
 		for (;;s.y += dir) {
-			System.out.println(s.x + " " + s.y);
 			if (s.x == end.x && s.y == end.y) break;
 			if (s.x == N || s.y == M) return new Struct(-1,-1);
+			System.out.println(grid[s.x][s.y]);
 			if (grid[s.x][s.y] != '.') {
-				//s.y -= dir;
+				s.y -= dir;
 				break;
 			}
 		}
