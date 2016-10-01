@@ -12,7 +12,7 @@ public class maze1 {
 		
 		Scanner in = new Scanner(new File("maze1.in.txt"));
 		PrintStream out = new PrintStream(new File("maze1.out.txt"));
-		int[][] dir = {{0,-1},{0,1},{-1,0},{1,0}};
+		int[][] dir = {{-1,0},{1,0},{0,-1},{0,1}};
 		// read input
 		int W = in.nextInt();
 		int H = in.nextInt();
@@ -22,7 +22,7 @@ public class maze1 {
 		Queue<Triple> q = new LinkedList<Triple>();
 		Triple[] exits = new Triple[2];
 		char[][] maze = new char[2*W + 1][2*H + 1];
-		String calibrate = in.nextLine();
+		in.nextLine();
 		for (int i = 0; i < 2*H + 1; i++) {
 			String line = in.nextLine();
 			for (int j = 0; j < 2*W + 1; j++) {
@@ -59,16 +59,21 @@ public class maze1 {
 			// fill the array
 			if (dist[current.x][current.y] == 0) {
 				dist[current.x][current.y] = current.d;
+				//System.out.println(current.x + " " + current.y + " " + current.d);
 				numFilled++;
-				if (numFilled == W * H) break;
+				System.out.println(numFilled);
+				if (numFilled == W * H) {
+					System.out.println(current.d);
+					System.exit(0);
+				}
 			}
-			// check up down left right
+			// check all 4 directions (left, right, up, down)
 			for (int i = 0; i < 4; i++) {
 				// if in bounds
 				if ((current.x + dir[i][0]) >= 0 && (current.x + dir[i][0]) < W) {
 					if ((current.y + dir[i][1]) >= 0 && (current.y + dir[i][1]) < H) {
 						// if there's no wall and not visited
-						if (dist[current.x + dir[i][0]][current.y + dir[i][1]] == 0 && maze[current.x * 2 + 1 + dir[i][0]][current.y * 2 + 1 + dir[i][1]] == ' ') {
+						if (maze[current.x * 2 + 1 + dir[i][0]][current.y * 2 + 1 + dir[i][1]] == ' ') {
 							// push the node
 							q.add(new Triple(current.x + dir[i][0], current.y + dir[i][1], current.d + 1));
 						}
@@ -76,14 +81,6 @@ public class maze1 {
 				}
 			}
 		}
-
-		int worst = 0;
-		for (int i = 0; i < H; i++) {
-			for (int j = 0; j < W; j++) {
-				worst = Math.max(worst, dist[j][i]);
-			}
-		}
-		System.out.println(worst);
 	}
 
 }

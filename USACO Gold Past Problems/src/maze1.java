@@ -73,6 +73,7 @@ public class maze1 {
 			if (mazeFill[xPos.peek()][yPos.peek()] == 0) {
 				mazeFill[xPos.peek()][yPos.peek()] = distances.peek();
 				numFilled++;
+				System.out.println(numFilled + " " + distances.peek());
 				if (numFilled == width * height) {
 					return distances.peek();
 				}
