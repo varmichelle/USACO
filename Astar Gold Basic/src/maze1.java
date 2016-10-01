@@ -67,8 +67,8 @@ public class maze1 {
 				// if in bounds
 				if ((current.x + dir[i][0]) >= 0 && (current.x + dir[i][0]) < W) {
 					if ((current.y + dir[i][1]) >= 0 && (current.y + dir[i][1]) < H) {
-						// if there's no wall
-						if (maze[current.x * 2 + dir[i][0]][current.y * 2 + dir[i][1]] == ' ') {
+						// if there's no wall and not visited
+						if (dist[current.x + dir[i][0]][current.y + dir[i][1]] == 0 && maze[current.x * 2 + 1 + dir[i][0]][current.y * 2 + 1 + dir[i][1]] == ' ') {
 							// push the node
 							q.add(new Triple(current.x + dir[i][0], current.y + dir[i][1], current.d + 1));
 						}
