@@ -43,14 +43,14 @@ public class fliptile {
 			// check the other rows
 			for (int j = 1; j < rows; j++) {
 				for (int i = 0; i < cols; i++) {
-					if (grid[i][j - 1] == '1') flip(i, j);
+					if (copy[i][j - 1] == 1) flip(i, j);
 				}
 			}
 			// check if the solution works
 			boolean works = true;
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
-					if (grid[j][i] == 1) works = false;
+					if (copy[j][i] == 1) works = false;
 				}
 			}
 			// if it does, print the results
@@ -62,9 +62,11 @@ public class fliptile {
 					}
 					System.out.println();
 				}
+				System.exit(0);
 			}
 			reset();
 		}
+		System.out.println("IMPOSSIBLE");
 	}
 
 	// execute a flip (flip the tile itself + 4 adjacent tiles)
@@ -75,7 +77,7 @@ public class fliptile {
 		for (int i = 0; i < 4; i++) {
 			if (x + dir[i][0] >= 0 && x + dir[i][0] < cols) {
 				if (y + dir[i][1] >= 0 && y + dir[i][1] < rows) {
-					copy[x][y] = 1 - copy[x][y];
+					copy[x + dir[i][0]][y + dir[i][1]] = 1 - copy[x + dir[i][0]][y + dir[i][1]];
 				}
 			}
 		}
