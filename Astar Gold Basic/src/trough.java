@@ -23,7 +23,7 @@ public class trough {
 		}
 		
 		// generate all possible configurations
-		for (int num = 1; num < Math.pow(2, nTroughs); num++) {
+		for (int num = 0; num < Math.pow(2, nTroughs); num++) {
 			String map = "00000000000000000000" + Integer.toBinaryString(num);
 			map = map.substring(map.length() - nTroughs, map.length());
 			for (int i = 0; i < nQuestions; i++) {
