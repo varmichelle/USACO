@@ -50,7 +50,7 @@ public class castle {
 				int wall = castle[x][y];
 				if (wall >= 8) {
 					if (floodfill[x][y] != floodfill[x][y+1]) {
-					int currentSum = roomSizes[floodfill[x][y]] + roomSizes[floodfill[x][y+1]];
+					int currentSum = roomSizes[floodfill[x][y]-1] + roomSizes[floodfill[x][y+1]-1];
 						bestSum = Math.max(bestSum, currentSum);
 					}
 				}
@@ -63,7 +63,7 @@ public class castle {
 				if (wall >= 8) wall -= 8;
 				if (wall >= 4) {
 					if (floodfill[x][y] != floodfill[x + 1][y]) {
-						int currentSum = roomSizes[floodfill[x][y]] + roomSizes[floodfill[x+1][y]];
+						int currentSum = roomSizes[floodfill[x][y]-1] + roomSizes[floodfill[x+1][y]-1];
 						bestSum = Math.max(bestSum, currentSum);
 					}
 				}
@@ -81,23 +81,25 @@ public class castle {
 			point current = q.remove();
 			if (floodfill[current.x][current.y] == 0) currentRoomSize++;
 			floodfill[current.x][current.y] = roomNumber;
-			int wall = castle[current.x][current.y];
-			// check down
-			if (current.y < H - 1 && wall < 8 && floodfill[current.x][current.y+1] == 0) {
-				q.add(new point(current.x, current.y + 1));
-			} else wall -= 8;
-			// check right
-			if (current.x < W - 1 && wall < 4 && floodfill[current.x+1][current.y] == 0) {
-				q.add(new point(current.x + 1, current.y));
-			} else wall -= 4;
-			// check up
-			if (current.y > 0 && wall < 2 && floodfill[current.x][current.y-1] == 0) {
-				q.add(new point(current.x, current.y - 1));
-			} else wall -= 2;
+			String wall = "0000" + Integer.toBinaryString(castle[current.x][current.y]);
+			wall = wall.substring(wall.length() - 4, wall.length());
 			// check left
-			if (current.x > 0 && wall < 1 && floodfill[current.x-1][current.y] == 0) {
+			if (current.x > 0 && wall.charAt(3) == '0' && floodfill[current.x-1][current.y] == 0) {
 				q.add(new point(current.x - 1, current.y));
-			} else wall -= 1;
+			}
+			// check up
+			if (current.y > 0 && wall.charAt(2) == '0' && floodfill[current.x][current.y-1] == 0) {
+				q.add(new point(current.x, current.y - 1));
+			}
+			// check right
+			if (current.x < W - 1 && wall.charAt(1) == '0' && floodfill[current.x+1][current.y] == 0) {
+				q.add(new point(current.x + 1, current.y));
+			}
+			// check down
+			if (current.y < H - 1 && wall.charAt(0) == '0' && floodfill[current.x][current.y+1] == 0) {
+				q.add(new point(current.x, current.y + 1));
+			}
+			
 		}
 		largestRoomSize = Math.max(largestRoomSize, currentRoomSize);
 		roomSizes[roomNumber - 1] = currentRoomSize;
