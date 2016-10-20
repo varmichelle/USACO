@@ -15,30 +15,28 @@ public class auto {
 		Prefix[] dictionary = new Prefix[W];
 		for (int i = 0; i < W; i++) dictionary[i] = new Prefix(i, in.next());
 		Arrays.sort(dictionary);
-		int[] nth = new int[N];
-		String[] word = new String[N];
 		for (int i = 0; i < N; i++) {
-			nth[i] = in.nextInt();
-			word[i] = in.next();
+			int nth = in.nextInt();
+			String word = in.next();
 			// binary search to find occurrence of prefix in dictionary
 			int low = 0, high = W - 1, middle = (low + high) / 2;
 			while (low <= high) {
 				// if the current is too low, increase the lower bound and update middle
-				if (dictionary[middle].prefix.compareTo(word[i]) < 0) {
+				if (dictionary[middle].prefix.compareTo(word) < 0) {
 					low = middle + 1;
 					middle = (low + high) / 2;
 				}
 				// if the current contains the prefix of the current query
-		    	else if (dictionary[middle].prefix.length() >= word[i].length() && dictionary[middle].prefix.substring(0, word[i].length()).equals(word[i])) {
+		    	else if (dictionary[middle].prefix.length() >= word.length() && dictionary[middle].prefix.substring(0, word.length()).equals(word)) {
 		    		// find the first instance of that prefix
 		    		int index = middle;
-		    		while (index >= 0 && dictionary[index].prefix.length() >= word[i].length() && dictionary[index].prefix.substring(0, word[i].length()).equals(word[i])) {
+		    		while (index >= 0 && dictionary[index].prefix.length() >= word.length() && dictionary[index].prefix.substring(0, word.length()).equals(word)) {
 		    			index--;
 		    		}
 		    		index++;
 		    		// find the nth instance of that prefix 
-		    		if ((index + nth[i] - 1 < W) && dictionary[index].prefix.length() >= word[i].length() && dictionary[index + nth[i] - 1].prefix.substring(0, word[i].length()).equals(word[i])) {
-		    			System.out.println(dictionary[index + nth[i] - 1].index + 1);
+		    		if ((index + nth - 1 < W) && dictionary[index].prefix.length() >= word.length() && dictionary[index + nth - 1].prefix.substring(0, word.length()).equals(word)) {
+		    			System.out.println(dictionary[index + nth - 1].index + 1);
 		    		} else System.out.println(-1);
 		    		break;
 		    	// otherwise, the current must be too low, so decrease the upperbound and update middle
