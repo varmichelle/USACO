@@ -25,7 +25,7 @@ public class auto {
 		// loop through each query 
 		for (int i = 0; i < N; i++) {
 			int first = 0, last = N - 1, middle = (first + last)/2;
-		    while(first <= last) {
+		    while (first <= last) {
 		    	if (dictionary[middle].compareTo(prefixes[i]) < 0) first = middle + 1;    
 		    	else if (dictionary[middle].substring(0, prefixes[i].length()).equals(prefixes[i])) {
 		    		int index = i;
