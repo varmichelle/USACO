@@ -6,8 +6,8 @@ public class auto {
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		// set up file readers and writers
-		Scanner in = new Scanner(new File("auto.in"));
-		PrintStream out = new PrintStream(new File("auto.out"));
+		Scanner in = new Scanner(new File("auto.in.txt"));
+		PrintStream out = new PrintStream(new File("auto.out.txt"));
 		
 		// read in input
 		int W = in.nextInt();
@@ -34,8 +34,8 @@ public class auto {
 		    		}
 		    		index++;
 		    		if ((index + nth[i] - 1 < W) && dictionary[index].prefix.length() >= word[i].length() && dictionary[index + nth[i] - 1].prefix.substring(0, word[i].length()).equals(word[i])) {
-		    			out.println(dictionary[index + nth[i] - 1].index + 1);
-		    		} else out.println(-1);
+		    			System.out.println(dictionary[index + nth[i] - 1].index + 1);
+		    		} else System.out.println(-1);
 		    		break;
 		    	} else {
 		    		high = middle - 1;
