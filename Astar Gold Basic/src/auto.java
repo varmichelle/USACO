@@ -6,8 +6,8 @@ public class auto {
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		// set up file readers and writers
-		Scanner in = new Scanner(new File("auto.in.txt"));
-		PrintStream out = new PrintStream(new File("auto.out.txt"));
+		Scanner in = new Scanner(new File("auto.in"));
+		PrintStream out = new PrintStream(new File("auto.out"));
 		
 		// read in input
 		int W = in.nextInt();
@@ -22,7 +22,7 @@ public class auto {
 			word[i] = in.next();
 			// binary search to find occurrence of prefix in dictionary
 			int low = 0, high = W - 1, middle = (low + high) / 2;
-			while (low < high) {
+			while (low <= high) {
 				if (dictionary[middle].prefix.compareTo(word[i]) < 0) {
 					low = middle + 1;
 					middle = (low + high) / 2;
@@ -34,8 +34,8 @@ public class auto {
 		    		}
 		    		index++;
 		    		if ((index + nth[i] - 1 < W) && dictionary[index].prefix.length() >= word[i].length() && dictionary[index + nth[i] - 1].prefix.substring(0, word[i].length()).equals(word[i])) {
-		    			System.out.println(dictionary[index + nth[i] - 1].index + 1);
-		    		} else System.out.println(-1);
+		    			out.println(dictionary[index + nth[i] - 1].index + 1);
+		    		} else out.println(-1);
 		    		break;
 		    	} else {
 		    		high = middle - 1;
