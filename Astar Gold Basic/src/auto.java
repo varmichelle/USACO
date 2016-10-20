@@ -29,20 +29,15 @@ public class auto {
 				}
 		    	else if (dictionary[middle].prefix.length() >= word[i].length() && dictionary[middle].prefix.substring(0, word[i].length()).equals(word[i])) {
 		    		int index = middle;
-		    		while (dictionary[index].prefix.length() >= word[i].length() && dictionary[index].prefix.substring(0, word[i].length()).equals(word[i])) {
+		    		while (index >= 0 && dictionary[index].prefix.length() >= word[i].length() && dictionary[index].prefix.substring(0, word[i].length()).equals(word[i])) {
 		    			index--;
-		    			if (index < 0) {
-		    				index = 0;
-		    				break;
-		    			}
 		    		}
-		    		if (index != 0) index++;
+		    		index++;
 		    		if ((index + nth[i] - 1 < W) && dictionary[index].prefix.length() >= word[i].length() && dictionary[index + nth[i] - 1].prefix.substring(0, word[i].length()).equals(word[i])) {
 		    			System.out.println(dictionary[index + nth[i] - 1].index + 1);
 		    		} else System.out.println(-1);
 		    		break;
-		    	}
-		    	else {
+		    	} else {
 		    		high = middle - 1;
 				    middle = (low + high)/2;
 		    	}
