@@ -35,7 +35,7 @@ public class auto {
 		    		}
 		    		index++;
 		    		// find the nth instance of that prefix 
-		    		if ((index + nth - 1 < W) && dictionary[index].prefix.length() >= word.length() && dictionary[index + nth - 1].prefix.substring(0, word.length()).equals(word)) {
+		    		if ((index + nth - 1 < W) && dictionary[index + nth - 1].prefix.length() >= word.length() && dictionary[index + nth - 1].prefix.substring(0, word.length()).equals(word)) {
 		    			System.out.println(dictionary[index + nth - 1].index + 1);
 		    		} else System.out.println(-1);
 		    		break;
