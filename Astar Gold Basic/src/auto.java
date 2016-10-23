@@ -12,9 +12,13 @@ public class auto {
 		// read in input
 		int W = in.nextInt();
 		int N = in.nextInt();
+		
 		Prefix[] dictionary = new Prefix[W];
-		for (int i = 0; i < W; i++) dictionary[i] = new Prefix(i, in.next());
+		for (int i = 0; i < W; i++) {
+			dictionary[i] = new Prefix(i, in.next());
+		}
 		Arrays.sort(dictionary);
+		
 		for (int i = 0; i < N; i++) {
 			int nth = in.nextInt();
 			String word = in.next();
@@ -59,7 +63,7 @@ class Prefix implements Comparable<Prefix> {
 		prefix = p;
 	}
 	
-	// lets us sort the dictionary array by prefix
+	// allows sorting the dictionary array by prefix
 	public int compareTo(Prefix x) {
 		return this.prefix.compareTo(x.prefix);
 	}
