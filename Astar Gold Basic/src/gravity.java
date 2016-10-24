@@ -10,13 +10,6 @@ public class gravity {
 	static Queue<Struct> q = new LinkedList<Struct>();
 
 	public static void main(String[] args) throws FileNotFoundException {
-		
-		/**
-		 * General Solution Idea:
-		 * BFS implementing DFS to find all reachable points with the same flip
-		 * This makes sure we don't revisit points unnecessarily
-		 * (i.e. keep going left/right between two points)
-		 */
 	
 		Scanner in = new Scanner(new File("gravity.in.txt"));
 		PrintStream out = new PrintStream(new File("gravity.out.txt"));
@@ -31,6 +24,7 @@ public class gravity {
 			for (int j = 0; j < N; j++) {
 				grid[j][i] = str.charAt(j);
 				if (grid[j][i] == 'C') {
+					System.out.println(j + " " + i);
 					start = fall(new Struct(j, i), 1);
 					add(start, 0);
 				}
@@ -43,17 +37,19 @@ public class gravity {
 			// if reached endpoint, print the number of flips it took
 			if (current.x == end.x && current.y == end.y) {
 				System.out.println(flips[end.x][end.y]);
-				for (int i = 0; i < N; i++) {
-					for (int j = 0; j < M; j++) {
-						System.out.print(flips[j][i] + " ");
-					}
-					System.out.println();
-				}
+//				for (int i = 0; i < N; i++) {
+//					for (int j = 0; j < M; j++) {
+//						System.out.print(flips[j][i] + " ");
+//					}
+//					System.out.println();
+//				}
 				System.exit(0);
 			}
-			// otherwise, if in bounds, add all reachable nodes from the current position
-			if (current.x >= 0 && current.y >= 0) {
-				add(current, flips[current.x][current.y] + 1);
+			// otherwise, if in bounds, flip gravity
+			Struct p = fall(current, dir(current));
+			if (p.x != -1 && p.y != -1) {
+				// add all reachable points from the current node
+				add(p, flips[p.x][p.y] + 1);
 			}
 		}
 		System.out.println(-1);
@@ -62,39 +58,43 @@ public class gravity {
 	
 	// push all reachable nodes with the same flip
 	public static void add(Struct current, int flip) {
-		current = fall(current, dir(flip));
-		// left
-		for (int x = current.x - 1; x >= 0; x--) {
-			if (grid[x][current.y] != '#') {
-				q.add(new Struct(x, current.y));
-				flips[x][current.y] = flips[x + 1][current.y];
-			} else break;
-		}
-		// right
-		for (int x = current.x + 1; x < N; x++) {
-			if (grid[x][current.y] != '#') {
-				q.add(new Struct(x, current.y));
-				flips[x][current.y] = flips[x - 1][current.y];
-			} else break;
+		current = fall(current, dir(current));
+		if (current.x != -1 && current.y != -1) {
+			// left
+			for (int x = current.x - 1; x >= 0; x--) {
+				Struct i = fall(new Struct(x, current.y), dir(current));
+				if (i.x != -1 && i.y != -1) {
+					if (grid[i.x][i.y] != '#') {
+						q.add(i);
+						flips[i.x][i.y] = flips[i.x + 1][i.y];
+					} else break;
+				} else break;
+			}
+			// right
+			for (int x = current.x + 1; x < N; x++) {
+				Struct i = fall(new Struct(x, current.y), dir(current));
+				if (i.x != -1 && i.y != -1) {
+					if (grid[i.x][i.y] != '#') {
+						q.add(i);
+						flips[i.x][i.y] = flips[i.x - 1][i.y];
+					} else break;
+				} else break;
+			}
 		}
 	}
 	
 	// return the direction of gravity (1 for down, -1 for up)
 	public static int dir(Struct s) {
 		if (flips[s.x][s.y] % 2 == 0) return 1;
-		return -1;
-	}
-	
-	public static int dir(int flips) {
-		if (flips % 2 == 0) return 1;
-		return -1;
+		else return -1;
 	}
 	
 	// return the point the captain falls to due to gravity (-1,-1) if off the grid
 	public static Struct fall(Struct s, int dir) {
-		for (;;s.y += dir) {
+		while (true) {
+			s.y += dir;
 			if (s.x == end.x && s.y == end.y) break;
-			if (s.x == N || s.y == M) return new Struct(-1,-1);
+			if (s.x == N || s.y == M || s.x == -1 || s.y == -1) return new Struct(-1,-1);
 			if (grid[s.x][s.y] != '.') {
 				s.y -= dir;
 				break;
