@@ -38,7 +38,7 @@ public class comehome {
 		
 		// account for paths going to themselves
 		for (int i = 0; i < 52; i++) adj[i][i] = 0;
-				
+			
 		// Floyd-Warshall
 		for (int k = 0; k < 52; k++) {
 			for (int i = 0; i < 52; i++) {
