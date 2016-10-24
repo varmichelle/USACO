@@ -6,8 +6,8 @@ public class auto {
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		// set up file readers and writers
-		Scanner in = new Scanner(new File("auto.in.txt"));
-		PrintStream out = new PrintStream(new File("auto.out.txt"));
+		Scanner in = new Scanner(new File("auto.in"));
+		PrintStream out = new PrintStream(new File("auto.out"));
 		
 		// read in input
 		int W = in.nextInt();
@@ -32,18 +32,18 @@ public class auto {
 				}
 				// if the current contains the prefix of the current query
 		    	else if (dictionary[middle].prefix.length() >= word.length() && dictionary[middle].prefix.substring(0, word.length()).equals(word)) {
-		    		// find the first instance of that prefix
-		    		int index = middle;
-		    		// BINARY SEARCH HERE, OTHERWISE TOO SLOW
-		    		while (index >= 0 && dictionary[index].prefix.length() >= word.length() && dictionary[index].prefix.substring(0, word.length()).equals(word)) {
-		    			index--;
+		    		if (middle == 0 || (middle != 0) && dictionary[middle - 1].prefix.compareTo(word) < 0) {
+			    		// find the first instance of that prefix
+			    		int index = middle;
+			    		// find the nth instance of that prefix 
+			    		if ((index + nth - 1 < W) && dictionary[index + nth - 1].prefix.length() >= word.length() && dictionary[index + nth - 1].prefix.substring(0, word.length()).equals(word)) {
+			    			out.println(dictionary[index + nth - 1].index + 1);
+			    		} else out.println(-1);
+			    		break;
+		    		} else {
+		    			high = middle - 1;
+					    middle = (low + high)/2;
 		    		}
-		    		index++;
-		    		// find the nth instance of that prefix 
-		    		if ((index + nth - 1 < W) && dictionary[index + nth - 1].prefix.length() >= word.length() && dictionary[index + nth - 1].prefix.substring(0, word.length()).equals(word)) {
-		    			System.out.println(dictionary[index + nth - 1].index + 1);
-		    		} else System.out.println(-1);
-		    		break;
 		    	// otherwise, the current must be too low, so decrease the upperbound and update middle
 		    	} else {
 		    		high = middle - 1;
