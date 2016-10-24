@@ -37,12 +37,6 @@ public class gravity {
 			// if reached endpoint, print the number of flips it took
 			if (current.x == end.x && current.y == end.y) {
 				System.out.println(flips[end.x][end.y]);
-//				for (int i = 0; i < N; i++) {
-//					for (int j = 0; j < M; j++) {
-//						System.out.print(flips[j][i] + " ");
-//					}
-//					System.out.println();
-//				}
 				System.exit(0);
 			}
 			// otherwise, if in bounds, flip gravity
