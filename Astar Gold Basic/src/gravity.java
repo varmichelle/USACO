@@ -75,8 +75,9 @@ public class gravity {
 				} else break;
 			}
 			// add the original point
-			q.add(current);
 			flips[current.x][current.y] += 1;
+			Struct fell = fall(current, dir(current));
+			if (fell.x != -1 && fell.y != -1) q.add(fell);
 		}
 	}
 	
