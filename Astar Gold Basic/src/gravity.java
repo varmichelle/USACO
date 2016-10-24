@@ -32,43 +32,50 @@ public class gravity {
 				grid[j][i] = str.charAt(j);
 				if (grid[j][i] == 'C') {
 					start = fall(new Struct(j, i), 1);
-					dfs(fall(start, dir(start)), 0);
+					add(start, 0);
 				}
 				else if (grid[j][i] == 'D') end = new Struct(j, i);			
 			}
 		}
 		while (!q.isEmpty()) {
 			Struct current = q.remove();
+			System.out.println(current.x + " " + current.y);
 			// if reached endpoint, print the number of flips it took
 			if (current.x == end.x && current.y == end.y) {
 				System.out.println(flips[end.x][end.y]);
+				for (int i = 0; i < N; i++) {
+					for (int j = 0; j < M; j++) {
+						System.out.print(flips[j][i] + " ");
+					}
+					System.out.println();
+				}
 				System.exit(0);
 			}
-			// otherwise, if in bounds, dfs on the current position
-			if (current.x >= 0 && current.y >= 0) dfs(current, flips[current.x][current.y] + 1);
+			// otherwise, if in bounds, add all reachable nodes from the current position
+			if (current.x >= 0 && current.y >= 0) {
+				add(current, flips[current.x][current.y] + 1);
+			}
 		}
 		System.out.println(-1);
 
 	}
 	
-	// dfs and push all points reachable with the same flip to the queue
-	public static void dfs(Struct current, int flip) {
+	// push all reachable nodes with the same flip
+	public static void add(Struct current, int flip) {
 		current = fall(current, dir(flip));
-		if (current.x != -1 && current.y != -1) {
-			// left
-			if (current.x > 0 && grid[current.x - 1][current.y] != '#') {
-				q.add(new Struct(current.x - 1, current.y));
-				flips[current.x - 1][current.y] = flips[current.x][current.y];
-				Struct newStruct = new Struct(current.x - 1, current.y);
-				dfs(newStruct, flip);
-			}
-			// right
-			if (current.x < M - 1 && grid[current.x + 1][current.y] != '#') {
-				q.add(new Struct(current.x + 1, current.y));
-				flips[current.x + 1][current.y] = flips[current.x][current.y];
-				Struct newStruct = new Struct(current.x + 1, current.y);
-				dfs(newStruct, flip);
-			}
+		// left
+		for (int x = current.x - 1; x >= 0; x--) {
+			if (grid[x][current.y] != '#') {
+				q.add(new Struct(x, current.y));
+				flips[x][current.y] = flips[x + 1][current.y];
+			} else break;
+		}
+		// right
+		for (int x = current.x + 1; x < N; x++) {
+			if (grid[x][current.y] != '#') {
+				q.add(new Struct(x, current.y));
+				flips[x][current.y] = flips[x - 1][current.y];
+			} else break;
 		}
 	}
 	
@@ -88,7 +95,6 @@ public class gravity {
 		for (;;s.y += dir) {
 			if (s.x == end.x && s.y == end.y) break;
 			if (s.x == N || s.y == M) return new Struct(-1,-1);
-			System.out.println(grid[s.x][s.y]);
 			if (grid[s.x][s.y] != '.') {
 				s.y -= dir;
 				break;

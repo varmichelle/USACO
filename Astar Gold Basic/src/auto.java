@@ -34,6 +34,7 @@ public class auto {
 		    	else if (dictionary[middle].prefix.length() >= word.length() && dictionary[middle].prefix.substring(0, word.length()).equals(word)) {
 		    		// find the first instance of that prefix
 		    		int index = middle;
+		    		// BINARY SEARCH HERE, OTHERWISE TOO SLOW
 		    		while (index >= 0 && dictionary[index].prefix.length() >= word.length() && dictionary[index].prefix.substring(0, word.length()).equals(word)) {
 		    			index--;
 		    		}
