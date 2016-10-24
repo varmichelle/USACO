@@ -24,16 +24,16 @@ public class gravity {
 			for (int j = 0; j < N; j++) {
 				grid[j][i] = str.charAt(j);
 				if (grid[j][i] == 'C') {
-					System.out.println(j + " " + i);
-					start = fall(new Struct(j, i), 1);
-					add(start, 0);
+					start = new Struct(j, i);
 				}
 				else if (grid[j][i] == 'D') end = new Struct(j, i);			
 			}
 		}
+		start = fall(start,1);
+		add(start, 0);
 		while (!q.isEmpty()) {
 			Struct current = q.remove();
-			System.out.println(current.x + " " + current.y);
+			System.out.println("current: " + current.x + " " + current.y);
 			// if reached endpoint, print the number of flips it took
 			if (current.x == end.x && current.y == end.y) {
 				System.out.println(flips[end.x][end.y]);
@@ -80,6 +80,9 @@ public class gravity {
 					} else break;
 				} else break;
 			}
+			// add the original point
+			q.add(current);
+			flips[current.x][current.y] += 1;
 		}
 	}
 	
