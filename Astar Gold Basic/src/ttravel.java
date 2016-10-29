@@ -11,26 +11,24 @@ public class ttravel {
 		
 		// read in input
 		int N = in.nextInt();
-		String[] queries = new String[N + 1];
+		// 0: last cow index, 1: parent
+		int[][] cows = new int[N + 2][2];
+		cows[0][0] = -1;
+		cows[0][1] = -1;
 		for (int i = 1; i <= N; i++) {
 			String letter = in.next();
-			if (letter == "a") {
-				int number = in.nextInt();
-				queries[i] = letter + " " + number;
-			} else if (letter == "s") {
-				queries[i] = letter;
-			} else if (letter == "t") {
-				int number = in.nextInt();
-				queries[i] = letter + " " + number;
+			if (letter.equals("a")) {
+				cows[i][0] = in.nextInt();
+				cows[i][1] = i-1;
+			} else if (letter.equals("s")) {
+				cows[i][1] = cows[cows[i-1][1]][1];
+				cows[i][0] = cows[cows[i][1]+1][0];
+			} else if (letter.equals("t")) {
+				int index = in.nextInt();
+				cows[i][1] = cows[index-1][1];
+				cows[i][0] = cows[index-1][0];
 			}
-		}
-		
-		// create the herd
-		Stack<Integer> cows = new Stack<Integer>();
-		for (int i = 1; i <= N; i++) {
-			String query = queries[i];
-			if (query.charAt(0) == 's') cows.pop();
-			else cows.push((int) query.charAt(2));
+			System.out.println(cows[i][0]);
 		}
 
 	}

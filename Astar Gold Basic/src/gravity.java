@@ -33,13 +33,13 @@ public class gravity {
 		add(start, 0);
 		while (!q.isEmpty()) {
 			Struct current = q.remove();
+			flips[current.x][current.y] += 1;
 			for (int i = 0; i < M; i++) {
 				for (int j = 0; j < N; j++) {
 					System.out.print(flips[j][i] + " ");
 				}
 				System.out.println();
 			}
-			flips[current.x][current.y] += 1;
 			System.out.println("current: " + current.x + " " + current.y);
 			// if reached endpoint, print the number of flips it took
 			if (current.x == end.x && current.y == end.y) {
