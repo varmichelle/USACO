@@ -74,7 +74,7 @@ class Coordinate {
 	
 	@Override
 	public int hashCode() {
-		return x*3 + y;
+		return x + y;
 	}
 	
 	@Override
