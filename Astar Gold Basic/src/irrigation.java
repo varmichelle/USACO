@@ -39,11 +39,17 @@ public class irrigation {
 		for (int i = 1; i < V; i++) {
 			// find the optimal vertex (minimum distance)
 			int index = 0, distance = INF;
+			boolean foundOne = false;
 			for (int j = 0; j < V; j++) {
 				if (distances[j] >= C && distances[j] < distance && !visited[j]) {
 					distance = distances[j];
 					index = j;
+					foundOne = true;
 				}
+			}
+			if (!foundOne) {
+				System.out.println(-1);
+				System.exit(0);
 			}
 			visited[index] = true;
 			cost += distances[index];
