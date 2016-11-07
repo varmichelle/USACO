@@ -14,8 +14,13 @@ public class water {
 		// read input
 		int V = in.nextInt();
 		int[] wells = new int[V];
+		int min = INF, min_index = 0;
 		for (int i = 0; i < V; i++) {
 			wells[i] = in.nextInt();
+			if (wells[i] < min) {
+				min = wells[i];
+				min_index = i;
+			}
 		}
 		
 		// initialize distances in matrix
@@ -31,38 +36,39 @@ public class water {
 			matrix[i][i] = wells[i];
 		}
 		
-		int minCost = INF;
-		for (int k = 0; k < V; k++) {
-			boolean visited[] = new boolean[V];
-			int start = k;
-			int distances[] = new int[V];
-			for (int i = 0; i < V; i++) {
-				distances[i] = matrix[0][i];
-			}
-			visited[start] = true;
-			distances[start] = wells[start];
-			int cost = wells[start];
-			// loop V-1 times
-			for (int i = 1; i < V; i++) {
-				// find the optimal vertex (minimum distance)
-				int index = 0, distance = INF;
-				for (int j = 0; j < V; j++) {
-					if (distances[j] < distance && !visited[j]) {
-						distance = distances[j];
-						index = j;
-					}
-				}
-				visited[index] = true;
-				cost += distances[index];
-				// update distances array
-				for (int j = 0; j < V; j++) {
-					distances[j] = Math.min(distances[j], matrix[index][j]);
-				}
-			}
-			minCost = Math.min(minCost, cost);
+		boolean visited[] = new boolean[V];
+		
+		int start = min_index;
+		
+		int distances[] = new int[V];
+		for (int i = 0; i < V; i++) {
+			distances[i] = matrix[0][i];
 		}
 		
-		System.out.println(minCost);
+		visited[start] = true;
+		distances[start] = wells[start];
+		int cost = wells[start];
+		
+		// loop V-1 times
+		for (int i = 1; i < V; i++) {
+			// find the optimal vertex (minimum distance)
+			int index = 0, distance = INF;
+			for (int j = 0; j < V; j++) {
+				if (distances[j] < distance && !visited[j]) {
+					distance = distances[j];
+					index = j;
+				}
+				
+			}
+			visited[index] = true;
+			cost += distances[index];
+			// update distances array
+			for (int j = 0; j < V; j++) {
+				distances[j] = Math.min(distances[j], matrix[index][j]);
+			}
+		}
+		
+		System.out.println(cost);
 
 	}
 
