@@ -3,9 +3,16 @@ import java.io.*;
 
 public class sparty {
 	
-	static final int INF = 999999999;
+	static final int INF = 99999999;
 
 	public static void main(String[] args) throws FileNotFoundException {
+		
+		/**
+		 * Solution Idea:
+		 * Run Dijkstra's twice:
+		 * Once for the return trip, from party pasture to home pasture
+		 * Once for the trip to the party with a reverse Dijkstra's (using adj[i][source] instead of adj[source][i])
+		 */
 
 		Scanner in = new Scanner(new File("sparty.in.txt"));
 		PrintStream out = new PrintStream(new File("sparty.out.txt"));
@@ -35,32 +42,63 @@ public class sparty {
 			adj[i][i] = 0;
 		}
 		
-		boolean[] visited = new boolean[pastures];
-		visited[source] = true;
+		boolean[] visitedFrom = new boolean[pastures];
+		visitedFrom[source] = true;
+		boolean[] visitedTo = new boolean[pastures];
+		visitedTo[source] = true;
 		
 		// initialize distance matrix with values from adjacency matrix
-		int[] distances = new int[pastures];
+		int[] distancesFrom = new int[pastures];
 		for (int i = 0; i < pastures; i++) {
-			distances[i] = adj[source][i];
+			distancesFrom[i] = adj[source][i];
+		}
+		int[] distancesTo = new int[pastures];
+		for (int i = 0; i < pastures; i++) {
+			distancesTo[i] = adj[i][source];
 		}
 		
 		// loop V-1 times
 		for (int i = 0; i < pastures - 1; i++) {
+			// TO 
 			// find the unvisited vertex with minimum distance to visited nodes
 			int index = 0, distance = INF;
 			for (int j = 0; j < pastures; j++) {
-				if (distances[j] < distance && !visited[j]) {
-					distance = distances[j];
+				if (distancesFrom[j] < distance && !visitedFrom[j]) {
+					distance = distancesFrom[j];
 					index = j;
 				}
 			}
-			visited[index] = true;
+			visitedFrom[index] = true;
 			
 			// update distance matrix with better distances
 			for (int j = 0; j < pastures; j++) {
-				distances[j] = Math.min(distances[j], distances[index] + adj[index][j]);
+				distancesFrom[j] = Math.min(distancesFrom[j], distancesFrom[index] + adj[index][j]);
 			}
+			
+			// FROM
+			// find the unvisited vertex with minimum distance to visited nodes
+			index = 0;
+			distance = INF;
+			for (int j = 0; j < pastures; j++) {
+				if (distancesTo[j] < distance && !visitedTo[j]) {
+					distance = distancesTo[j];
+					index = j;
+				}
+			}
+			visitedTo[index] = true;
+			
+			// update distance matrix with better distances
+			for (int j = 0; j < pastures; j++) {
+				distancesTo[j] = Math.min(distancesTo[j], distancesTo[index] + adj[j][index]);
+			}
+			
 		}
+		
+		int maxTime = 0;
+		for (int i = 0; i < pastures; i++) {
+			maxTime = Math.max(maxTime, distancesTo[i] + distancesFrom[i]);
+		}
+		System.out.println(maxTime);
 		
 	}
 
