@@ -32,21 +32,36 @@ public class mst {
 			matrix[node2][node1] = distance;
 		}
 		
-		// initialize distances to INF
-		int distances[] = new int[V];
-		for (int i = 0; i < V; i++) {
-			distances[i] = INF;
-		}
-		
 		boolean visited[] = new boolean[V];
 		
 		int start = 0;
+		
+		int distances[] = new int[V];
+		for (int i = 0; i < V; i++) {
+			distances[i] = matrix[0][i];
+		}
 		visited[start] = true;
 		distances[start] = 0;
+		int cost = 0;
 		
-		for (int i = 0; i < V - 1; i++) {
-			
+		// loop V-1 times
+		for (int i = 1; i < V; i++) {
+			// find the optimal vertex (minimum distance)
+			int index = 0, distance = INF;
+			for (int j = 0; j < V; j++) {
+				if (distances[j] < distance && !visited[j]) {
+					distance = distances[j];
+					index = j;
+				}
+			}
+			visited[index] = true;
+			cost += distances[index];
+			// update distances array
+			for (int j = 0; j < V; j++) {
+				distances[j] = Math.min(distances[j], matrix[index][j]);
+			}
 		}
+		System.out.println(cost);
 
 	}
 
