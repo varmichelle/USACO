@@ -29,6 +29,7 @@ public class irrigation {
 			int x = coordinates[i][0] - coordinates[start][0];
 			int y = coordinates[i][1] - coordinates[start][1];
 			distances[i] = x*x + y*y;
+			if (distances[i] < C) distances[i] = INF;
 		}
 		visited[start] = true;
 		distances[start] = 0;
@@ -48,9 +49,9 @@ public class irrigation {
 			cost += distances[index];
 			// update distances array
 			for (int j = 0; j < V; j++) {
-				int x = coordinates[j][0] - coordinates[start][0];
-				int y = coordinates[j][1] - coordinates[start][1];
-				distances[j] = Math.min(distances[j], x*x + y*y);
+				int x = coordinates[j][0] - coordinates[index][0];
+				int y = coordinates[j][1] - coordinates[index][1];
+				if (x*x + y*y >= C) distances[j] = Math.min(distances[j], x*x + y*y);
 			}
 		}
 		System.out.println(cost);
