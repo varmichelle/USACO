@@ -7,6 +7,12 @@ public class water {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		
+		/**
+		 * Main concept:
+		 * Start Prim's at the least costly pasture to build a well
+		 * Building a pasture in k is the same as building a pipe from n to k (just different cost)
+		 */
+		
 		// set up file readers and writers
 		Scanner in = new Scanner(new File("water.in.txt"));
 		PrintStream out = new PrintStream(new File("water.out.txt"));
@@ -42,7 +48,7 @@ public class water {
 		
 		int distances[] = new int[V];
 		for (int i = 0; i < V; i++) {
-			distances[i] = matrix[0][i];
+			distances[i] = matrix[start][i];
 		}
 		
 		visited[start] = true;
@@ -52,19 +58,33 @@ public class water {
 		// loop V-1 times
 		for (int i = 1; i < V; i++) {
 			// find the optimal vertex (minimum distance)
-			int index = 0, distance = INF;
+			int index_pipe = 0, distance_pipe = INF;
+			int index_well = 0, distance_well = INF;
 			for (int j = 0; j < V; j++) {
-				if (distances[j] < distance && !visited[j]) {
-					distance = distances[j];
-					index = j;
+				if (distances[j] < distance_pipe && !visited[j]) {
+					distance_pipe = distances[j];
+					index_pipe = j;
 				}
-				
+				if (wells[j] < distance_well && !visited[j]) {
+					distance_well = wells[j];
+					index_well = j;
+				}
 			}
-			visited[index] = true;
-			cost += distances[index];
-			// update distances array
-			for (int j = 0; j < V; j++) {
-				distances[j] = Math.min(distances[j], matrix[index][j]);
+			if (distance_pipe < distance_well) {
+				visited[index_pipe] = true;
+				cost += distances[index_pipe];
+				// update distances array
+				for (int j = 0; j < V; j++) {
+					distances[j] = Math.min(distances[j], matrix[index_pipe][j]);
+				}
+			} else {
+				visited[index_well] = true;
+				cost += wells[index_well];
+				distances[index_well] = wells[index_well];
+				// update distances array
+				for (int j = 0; j < V; j++) {
+					distances[j] = Math.min(distances[j], matrix[index_well][j]);
+				}				
 			}
 		}
 		
