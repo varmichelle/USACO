@@ -28,8 +28,10 @@ public class pwrfail {
 		for (int i = 0; i < V; i++) {
 			for (int j = 0; j < V; j++) {
 				double distance = Math.sqrt(Math.pow(coordinates[i][0] - coordinates[j][0], 2) + Math.pow(coordinates[i][1] - coordinates[j][1], 2));
-				adj[i][j] = distance;
-				adj[j][i] = distance;
+				if (distance <= max) {
+					adj[i][j] = distance;
+					adj[j][i] = distance;
+				}
 			}
 		}
 		
