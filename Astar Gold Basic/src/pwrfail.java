@@ -12,23 +12,31 @@ public class pwrfail {
 		
 		int V = in.nextInt(); // number of vertices
 		int E = in.nextInt(); // number of edges
-		int source = in.nextInt() - 1; // source vertex, subtract 1 to account for array indexing
+		int source = 0; // source vertex, subtract 1 to account for array indexing
 		
 		// initialize adjacency matrix with INF
-		int[][] adj = new int[V][V];
+		double[][] adj = new double[V][V];
 		for (int i = 0; i < V; i++) {
 			for (int j = 0; j < V; j++) {
 				adj[i][j] = INF;
 			}
 		}
 		
+		int[][] coordinates = new int[V][2];
+		
+		// read in coordinates
+		for (int i = 0; i < V; i++) {
+			coordinates[i][0] = in.nextInt();
+			coordinates[i][1] = in.nextInt();
+		}
+		
 		// populate adjacency matrix with initial distances
 		for (int i = 0; i < E; i++) {
 			int vertex1 = in.nextInt() - 1;
 			int vertex2 = in.nextInt() - 1;
-			int dist = in.nextInt();
-			adj[vertex1][vertex2] = Math.min(dist, adj[vertex1][vertex2]);
-			adj[vertex2][vertex1] = adj[vertex1][vertex2];
+			double distance = Math.sqrt(Math.pow(coordinates[vertex1][0] - coordinates[vertex2][0], 2) + Math.pow(coordinates[vertex1][1] - coordinates[vertex2][1], 2));
+			adj[vertex1][vertex2] = distance;
+			adj[vertex2][vertex1] = distance;
 		}
 		
 		// distance to itself is 0
@@ -40,7 +48,7 @@ public class pwrfail {
 		visited[source] = true;
 		
 		// initialize distance matrix with values from adjacency matrix
-		int[] distances = new int[V];
+		double[] distances = new double[V];
 		for (int i = 0; i < V; i++) {
 			distances[i] = adj[source][i];
 		}
@@ -48,7 +56,8 @@ public class pwrfail {
 		// loop V-1 times
 		for (int i = 0; i < V - 1; i++) {
 			// find the unvisited vertex with minimum distance to visited nodes
-			int index = 0, distance = INF;
+			int index = 0;
+			double distance = INF;
 			for (int j = 0; j < V; j++) {
 				if (distances[j] < distance && !visited[j]) {
 					distance = distances[j];
@@ -64,10 +73,8 @@ public class pwrfail {
 		}
 		
 		// print distances
-		for (int i = 0; i < V; i++) {
-			if (distances[i] == INF) System.out.println(-1);
-			else System.out.println(distances[i]);
-		}
+		if (distances[V-1] == INF) System.out.println(-1);
+		else System.out.println(distances[V-1]);
 
 	}
 
