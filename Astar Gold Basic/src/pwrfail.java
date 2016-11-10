@@ -31,6 +31,9 @@ public class pwrfail {
 				if (distance <= max) {
 					adj[i][j] = distance;
 					adj[j][i] = distance;
+				} else {
+					adj[i][j] = INF;
+					adj[j][i] = INF;
 				}
 			}
 		}
