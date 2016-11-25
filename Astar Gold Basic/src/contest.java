@@ -19,20 +19,13 @@ public class contest {
 		}
 		
 		// Floyd-Warshall
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				for (int k = 0; k < N; k++) {
+		for (int k = 0; k < N; k++) {
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
 					// if i-k and k-j are connected, then i-j is connected
-					if (graph[i][k] == 1 && graph[k][j] == 1) graph[i][k] = 1;
+					if (graph[i][k] == 1 && graph[k][j] == 1) graph[i][j] = 1;
 				}
 			}
-		}
-		
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				System.out.print(graph[j][i]);
-			}
-			System.out.println();
 		}
 		
 		// count number of cows whose rank can be determined
@@ -43,10 +36,7 @@ public class contest {
 				if (d == c) continue;
 				if (graph[c][d] == 0 && graph[d][c] == 0) answer = false;
 			}
-			if (answer) {
-				count++;
-				System.out.println("cow: " + c);
-			}
+			if (answer) count++;
 		}
 		
 		System.out.println(count);
