@@ -15,8 +15,6 @@ public class contest {
 		// 0 = not connected, 1 = connected
 		int[][] graph = new int[N][N];
 		for (int i = 0; i < M; i++) {
-			int one = in.nextInt();
-			int two = in.nextInt();
 			graph[in.nextInt() - 1][in.nextInt() - 1] = 1;
 		}
 		
