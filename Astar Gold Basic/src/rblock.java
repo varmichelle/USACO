@@ -12,7 +12,6 @@ public class rblock {
 		
 		int V = in.nextInt(); // number of vertices
 		int E = in.nextInt(); // number of edges
-		int source = in.nextInt() - 1; // source vertex, subtract 1 to account for array indexing
 		
 		// initialize adjacency matrix with INF
 		int[][] adj = new int[V][V];
@@ -31,18 +30,13 @@ public class rblock {
 			adj[vertex2][vertex1] = adj[vertex1][vertex2];
 		}
 		
-		// distance to itself is 0
-		for (int i = 0; i < V; i++) {
-			adj[i][i] = 0;
-		}
-		
 		boolean[] visited = new boolean[V];
-		visited[source] = true;
+		visited[0] = true;
 		
 		// initialize distance matrix with values from adjacency matrix
 		int[] distances = new int[V];
 		for (int i = 0; i < V; i++) {
-			distances[i] = adj[source][i];
+			distances[i] = adj[0][i];
 		}
 
 		// loop V-1 times
