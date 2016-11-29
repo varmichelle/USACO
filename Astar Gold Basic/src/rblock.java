@@ -30,18 +30,19 @@ public class rblock {
 			adj[vertex2][vertex1] = adj[vertex1][vertex2];
 		}
 		
-		boolean[] visited = new boolean[V];
-		visited[0] = true;
-		
-		// initialize distance matrix with values from adjacency matrix
+		// copy into a distance array
 		int[] distances = new int[V];
 		for (int i = 0; i < V; i++) {
 			distances[i] = adj[0][i];
 		}
-
-		// loop V-1 times
+		
+		// create a visited array for use with Dijkstra's
+		boolean[] visited = new boolean[V];
+		visited[0] = true;
+		
+		// run Dijkstra's on original matrix to find the edges needed
 		for (int i = 0; i < V - 1; i++) {
-			// find the unvisited vertex with minimum distance to visited nodes
+			// find the unvisited vertex with min distance to visited nodes
 			int index = 0, distance = INF;
 			for (int j = 0; j < V; j++) {
 				if (distances[j] < distance && !visited[j]) {
@@ -50,17 +51,10 @@ public class rblock {
 				}
 			}
 			visited[index] = true;
-			
 			// update distance matrix with better distances
 			for (int j = 0; j < V; j++) {
 				distances[j] = Math.min(distances[j], distances[index] + adj[index][j]);
 			}
-		}
-		
-		// print distances
-		for (int i = 0; i < V; i++) {
-			if (distances[i] == INF) System.out.println(-1);
-			else System.out.println(distances[i]);
 		}
 
 	}
