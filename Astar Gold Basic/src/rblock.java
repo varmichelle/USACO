@@ -35,10 +35,11 @@ public class rblock {
 		for (int i = 0; i < V; i++) {
 			distances[i] = adj[0][i];
 		}
-		
-		// create a visited array for use with Dijkstra's
+
 		boolean[] visited = new boolean[V];
 		visited[0] = true;
+		int[] path = new int[V];
+		int worstDistance = 0, originalDistance = 0;
 		
 		// run Dijkstra's on original matrix to find the edges needed
 		for (int i = 0; i < V - 1; i++) {
@@ -51,11 +52,50 @@ public class rblock {
 				}
 			}
 			visited[index] = true;
+			path[i+1] = index;
 			// update distance matrix with better distances
 			for (int j = 0; j < V; j++) {
 				distances[j] = Math.min(distances[j], distances[index] + adj[index][j]);
 			}
+			if (index == V - 1) {
+				originalDistance = distances[V-1];
+				break;
+			}
 		}
+		
+		// loop through the edges and double each 
+		for (int i = 1; i < V; i++) {
+			adj[path[i-1]][path[i]] *= 2;
+			for (int j = 0; j < V; j++) {
+				distances[j] = adj[0][j];
+				visited[j] = false;
+			}
+			// run Dijkstra's
+			for (int k = 0; k < V - 1; k++) {
+				// find the unvisited vertex with min distance to visited nodes
+				int index = 0, distance = INF;
+				for (int j = 0; j < V; j++) {
+					if (distances[j] < distance && !visited[j]) {
+						distance = distances[j];
+						index = j;
+					}
+				}
+				visited[index] = true;
+				path[k+1] = index;
+				// update distance matrix with better distances
+				for (int j = 0; j < V; j++) {
+					distances[j] = Math.min(distances[j], distances[index] + adj[index][j]);
+				}
+				if (index == V - 1) break;
+			}
+			System.out.println(distances[V-1]);
+			worstDistance = Math.max(worstDistance, distances[V-1]);
+			// reset
+			adj[path[i-1]][path[i]] /= 2;
+			if (path[i] == V-1) break;
+		}
+		
+		System.out.println(worstDistance - originalDistance);
 
 	}
 
