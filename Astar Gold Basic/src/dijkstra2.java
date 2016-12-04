@@ -1,14 +1,14 @@
 import java.util.*;
 import java.io.*;
 
-public class dijkstra {
+public class dijkstra2 {
 	
 	static final int INF = 999999999;
 
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		Scanner in = new Scanner(new File("dijkstra.in.txt"));
-		PrintStream out = new PrintStream(new File("dijkstra.out.txt"));
+		Scanner in = new Scanner(new File("dijkstra2.in.txt"));
+		PrintStream out = new PrintStream(new File("dijkstra2.out.txt"));
 		
 		int V = in.nextInt(); // number of vertices
 		int E = in.nextInt(); // number of edges

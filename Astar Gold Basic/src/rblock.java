@@ -53,6 +53,7 @@ public class rblock {
 			}
 			visited[index] = true;
 			path[i+1] = index;
+			System.out.println(index + " " + distance);
 			// update distance matrix with better distances
 			for (int j = 0; j < V; j++) {
 				distances[j] = Math.min(distances[j], distances[index] + adj[index][j]);
@@ -66,6 +67,7 @@ public class rblock {
 		// loop through the edges and double each 
 		for (int i = 1; i < V; i++) {
 			adj[path[i-1]][path[i]] *= 2;
+			System.out.println("Path from " + path[i-1] + " to " + path[i]);
 			for (int j = 0; j < V; j++) {
 				distances[j] = adj[0][j];
 				visited[j] = false;
