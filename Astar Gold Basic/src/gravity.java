@@ -5,6 +5,7 @@ public class gravity {
 	
 	static int N, M;
 	static char[][] field;
+	static boolean[][] v1, v2;
 	static Queue<Cell> q;
 	
 	public static void main(String[] args) throws FileNotFoundException {
@@ -19,6 +20,8 @@ public class gravity {
 		// positions of captain and doctor
 		int cx = 0, cy = 0, dx = 0, dy = 0;
 		field = new char[N][M];
+		v1 = new boolean[N][M];
+		v2 = new boolean[N][M];
 		for (int y = 0; y < M; y++) {
 			String line = in.next();
 			for (int x = 0; x < N; x++) {
@@ -41,8 +44,10 @@ public class gravity {
 		Cell fell = fall(start);
 		if (fell.x != -1 && fell.y != -1) {
 			q.add(fell);
+			v1[fell.x][fell.y] = true;
 			// push all 0 flip reachable nodes
-			push(fell);
+			push(new Cell(fell.x - 1, fell.y, fell.flips, fell.dir));
+			push(new Cell(fell.x + 1, fell.y, fell.flips, fell.dir));
 		}
 		
 		while (!q.isEmpty()) {
@@ -56,8 +61,17 @@ public class gravity {
 			Cell next = fall(new Cell(current.x, current.y, current.flips + 1, current.dir * -1));
 			// if not out of bounds, push all reachable cells
 			if (next.x != -1 && next.y != -1) {
-				q.add(next);
-				push(next);
+				if (next.dir == 1 && !v1[next.x][next.y]) {
+					q.add(next);
+					v1[next.x][next.y] = true;
+					push(new Cell(next.x-1, next.y, next.flips, next.dir));
+					push(new Cell(next.x+1, next.y, next.flips, next.dir));
+				} else if (next.dir == -1 && !v2[next.x][next.y]) {
+					q.add(next);
+					v2[next.x][next.y] = true;
+					push(new Cell(next.x-1, next.y, next.flips, next.dir));
+					push(new Cell(next.x+1, next.y, next.flips, next.dir));
+				}
 			}
 		}
 		
@@ -68,6 +82,8 @@ public class gravity {
 	
 	// returns the position after falling due to gravity ((-1,-1) if fail)
 	public static Cell fall(Cell cell) {
+		// if out of bounds, return (-1,-1)
+		if (cell.x < 0 || cell.x >= N || cell.y < 0 || cell.y >= M) return new Cell(-1,-1,0,0);
 		// if at edge and in direction of gravity, return (-1,-1)
 		if (cell.y == 0 && cell.dir == -1) return new Cell(-1, -1, 0, 0);
 		if (cell.y == M - 1 && cell.dir == 1) return new Cell(-1, -1, 0, 0);
@@ -79,35 +95,22 @@ public class gravity {
 		return cell;		
 	}
 	
-	// push all nodes with that flip
+	// push all nodes with that flip using DFS
 	public static void push(Cell cell) {
-		// check left
-		int y = cell.y;
-		for (int x = cell.x - 1; x >= 0; x--) {
-			// if legal
-			if (field[x][y] == '#') break;
-			// fall
-			Cell fell = fall(new Cell(x, y, cell.flips, cell.dir));
-			// make sure the space is legal
-			if (fell.x != -1 && fell.y != -1) {
+		Cell fell = fall(cell);
+		// if legal
+		if (fell.x != -1 && fell.y != -1) {
+			if (fell.dir == 1 && !v1[fell.x][fell.y]) {
+				v1[fell.x][fell.y] = true;
 				q.add(fell);
-				y = fell.y;
-			}
-			else break;
-		}
-		// check right
-		y = cell.y;
-		for (int x = cell.x + 1; x < N; x++) {
-			// if legal
-			if (field[x][y] == '#') break;
-			// fall
-			Cell fell = fall(new Cell(x, y, cell.flips, cell.dir));
-			// make sure the space is legal
-			if (fell.x != -1 && fell.y != -1) {
+				push(new Cell(fell.x-1, fell.y, fell.flips, fell.dir));
+				push(new Cell(fell.x+1, fell.y, fell.flips, fell.dir));
+			} else if (fell.dir == -1 && !v2[fell.x][fell.y]) {
+				v2[fell.x][fell.y] = true;
 				q.add(fell);
-				y = fell.y;
+				push(new Cell(fell.x-1, fell.y, fell.flips, fell.dir));
+				push(new Cell(fell.x+1, fell.y, fell.flips, fell.dir));
 			}
-			else break;
 		}
 	}
 		
