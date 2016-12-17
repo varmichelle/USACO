@@ -43,9 +43,11 @@ public class gravity {
 		// push all 0 flip reachable nodes
 		push(start);
 		
+		int num = 0;
 		while (!q.isEmpty()) {
+			num++;
 			Cell current = q.remove();
-			System.out.println("current: " + current.x + " " + current.y + " " + current.flips);
+			if (num < 20) System.out.println("current: " + current.x + " " + current.y + " " + current.flips);
 			// check if reached end
 			if (current.x == dx && current.y == dy) {
 				System.out.println(current.flips);
@@ -54,7 +56,10 @@ public class gravity {
 			// otherwise add next nodes with 1 more flip
 			Cell next = fall(new Cell(current.x, current.y, current.flips + 1, current.dir * -1));
 			// if not out of bounds, push all reachable cells
-			if (next.x != -1 && next.y != -1) push(next);
+			if (next.x != -1 && next.y != -1) {
+				q.add(next);
+				push(next);
+			}
 		}
 		
 		// print -1 if unreachable
