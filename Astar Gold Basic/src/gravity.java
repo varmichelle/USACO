@@ -42,11 +42,12 @@ public class gravity {
 		if (fell.x != -1 && fell.y != -1) {
 			q.add(fell);
 			// push all 0 flip reachable nodes
-			push(start);
+			push(fell);
 		}
 		
 		while (!q.isEmpty()) {
 			Cell current = q.remove();
+			System.out.println(current.x + " " + current.y + " " + current.flips);
 			// check if reached end
 			if (current.x == dx && current.y == dy) {
 				System.out.println(current.flips);
