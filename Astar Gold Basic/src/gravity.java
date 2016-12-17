@@ -38,16 +38,14 @@ public class gravity {
 		
 		// add starting position
 		Cell start = new Cell(cx, cy, 0, 1);
-		q.add(fall(start));
+		Cell fell = fall(start);
+		if (fell.x != -1 && fell.y != -1) q.add(fell);
 		
 		// push all 0 flip reachable nodes
 		push(start);
 		
-		int num = 0;
 		while (!q.isEmpty()) {
-			num++;
 			Cell current = q.remove();
-			if (num < 20) System.out.println("current: " + current.x + " " + current.y + " " + current.flips);
 			// check if reached end
 			if (current.x == dx && current.y == dy) {
 				System.out.println(current.flips);
