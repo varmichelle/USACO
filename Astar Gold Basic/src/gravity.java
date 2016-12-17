@@ -6,6 +6,7 @@ public class gravity {
 	static int N, M;
 	static char[][] field;
 	static Queue<Cell> q;
+	static int[][] visited;
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		
@@ -19,6 +20,7 @@ public class gravity {
 		// positions of captain and doctor
 		int cx = 0, cy = 0, dx = 0, dy = 0;
 		field = new char[N][M];
+		visited = new int[N][M];
 		for (int y = 0; y < M; y++) {
 			String line = in.next();
 			for (int x = 0; x < N; x++) {
@@ -41,6 +43,7 @@ public class gravity {
 		Cell fell = fall(start);
 		if (fell.x != -1 && fell.y != -1) {
 			q.add(fell);
+			visited[fell.x][fell.y] = 1;
 			// push all 0 flip reachable nodes
 			push(fell);
 		}
@@ -56,8 +59,10 @@ public class gravity {
 			// otherwise add next nodes with 1 more flip
 			Cell next = fall(new Cell(current.x, current.y, current.flips + 1, current.dir * -1));
 			// if not out of bounds, push all reachable cells
-			if (next.x != -1 && next.y != -1) {
+			if (next.x != -1 && next.y != -1 && visited[next.x][next.y] < 3) {
 				q.add(next);
+				if (next.dir == -1) visited[next.x][next.y] += 2;
+				else visited[next.x][next.y]++;
 				push(next);
 			}
 		}
@@ -90,8 +95,10 @@ public class gravity {
 			// fall
 			Cell fell = fall(new Cell(x, y, cell.flips, cell.dir));
 			// make sure the space is legal
-			if (fell.x != -1 && fell.y != -1) {
+			if (fell.x != -1 && fell.y != -1 && visited[fell.x][fell.y] < 3) {
 				q.add(fell);
+				if (fell.dir == -1) visited[fell.x][fell.y] += 2;
+				else visited[fell.x][fell.y]++;
 				y = fell.y;
 			}
 			else break;
@@ -104,8 +111,10 @@ public class gravity {
 			// fall
 			Cell fell = fall(new Cell(x, y, cell.flips, cell.dir));
 			// make sure the space is legal
-			if (fell.x != -1 && fell.y != -1) {
+			if (fell.x != -1 && fell.y != -1 && visited[fell.x][fell.y] < 3) {
 				q.add(fell);
+				if (fell.dir == -1) visited[fell.x][fell.y] += 2;
+				else visited[fell.x][fell.y]++;
 				y = fell.y;
 			}
 			else break;
