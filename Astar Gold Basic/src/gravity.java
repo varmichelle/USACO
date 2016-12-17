@@ -3,7 +3,7 @@ import java.io.*;
 
 public class gravity {
 	
-	static int N, M;
+	static int N, M, dx = 0, dy = 0;
 	static char[][] field;
 	static boolean[][] v1, v2;
 	static Queue<Cell> q;
@@ -18,7 +18,7 @@ public class gravity {
 		M = in.nextInt();
 		N = in.nextInt();
 		// positions of captain and doctor
-		int cx = 0, cy = 0, dx = 0, dy = 0;
+		int cx = 0, cy = 0;
 		field = new char[N][M];
 		v1 = new boolean[N][M];
 		v2 = new boolean[N][M];
@@ -84,6 +84,11 @@ public class gravity {
 	public static Cell fall(Cell cell) {
 		// if out of bounds, return (-1,-1)
 		if (cell.x < 0 || cell.x >= N || cell.y < 0 || cell.y >= M) return new Cell(-1,-1,0,0);
+		// if reached D, print and finish
+		if (cell.x == dx && cell.y == dy) {
+			System.out.println(cell.flips);
+			System.exit(0);
+		}
 		// if at edge and in direction of gravity, return (-1,-1)
 		if (cell.y == 0 && cell.dir == -1) return new Cell(-1, -1, 0, 0);
 		if (cell.y == M - 1 && cell.dir == 1) return new Cell(-1, -1, 0, 0);
