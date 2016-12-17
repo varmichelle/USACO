@@ -103,13 +103,13 @@ public class gravity {
 			if (fell.dir == 1 && !v1[fell.x][fell.y]) {
 				v1[fell.x][fell.y] = true;
 				q.add(fell);
-				push(new Cell(fell.x-1, fell.y, fell.flips, fell.dir));
-				push(new Cell(fell.x+1, fell.y, fell.flips, fell.dir));
+				if (fell.x > 0 && field[fell.x-1][fell.y] != '#') push(new Cell(fell.x-1, fell.y, fell.flips, fell.dir));
+				if (fell.x < N - 1 && field[fell.x+1][fell.y] != '#') push(new Cell(fell.x+1, fell.y, fell.flips, fell.dir));
 			} else if (fell.dir == -1 && !v2[fell.x][fell.y]) {
 				v2[fell.x][fell.y] = true;
 				q.add(fell);
-				push(new Cell(fell.x-1, fell.y, fell.flips, fell.dir));
-				push(new Cell(fell.x+1, fell.y, fell.flips, fell.dir));
+				if (fell.x > 0 && field[fell.x-1][fell.y] != '#') push(new Cell(fell.x-1, fell.y, fell.flips, fell.dir));
+				if (fell.x < N - 1 && field[fell.x+1][fell.y] != '#') push(new Cell(fell.x+1, fell.y, fell.flips, fell.dir));
 			}
 		}
 	}
