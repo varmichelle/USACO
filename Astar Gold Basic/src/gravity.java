@@ -39,10 +39,11 @@ public class gravity {
 		// add starting position
 		Cell start = new Cell(cx, cy, 0, 1);
 		Cell fell = fall(start);
-		if (fell.x != -1 && fell.y != -1) q.add(fell);
-		
-		// push all 0 flip reachable nodes
-		push(start);
+		if (fell.x != -1 && fell.y != -1) {
+			q.add(fell);
+			// push all 0 flip reachable nodes
+			push(start);
+		}
 		
 		while (!q.isEmpty()) {
 			Cell current = q.remove();
