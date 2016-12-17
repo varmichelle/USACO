@@ -14,8 +14,8 @@ public class gravity {
 		PrintStream out = new PrintStream(new File("gravity.out.txt"));
 		
 		// read in input
-		N = in.nextInt();
 		M = in.nextInt();
+		N = in.nextInt();
 		// positions of captain and doctor
 		int cx = 0, cy = 0, dx = 0, dy = 0;
 		field = new char[N][M];
@@ -45,6 +45,7 @@ public class gravity {
 		
 		while (!q.isEmpty()) {
 			Cell current = q.remove();
+			System.out.println("current: " + current.x + " " + current.y + " " + current.flips);
 			// check if reached end
 			if (current.x == dx && current.y == dy) {
 				System.out.println(current.flips);
@@ -67,7 +68,7 @@ public class gravity {
 		if (cell.y == 0 && cell.dir == -1) return new Cell(-1, -1, 0, 0);
 		if (cell.y == M - 1 && cell.dir == 1) return new Cell(-1, -1, 0, 0);
 		// try falling
-		if (field[cell.x][cell.y + cell.dir] != '#') {
+		if (cell.y + cell.dir >= 0 && cell.y + cell.dir < M && field[cell.x][cell.y + cell.dir] != '#') {
 			return fall(new Cell(cell.x, cell.y + cell.dir, cell.flips, cell.dir));
 		}
 		// otherwise the next space must be blocked, so return the original space
@@ -78,6 +79,8 @@ public class gravity {
 	public static void push(Cell cell) {
 		// check left
 		for (int x = cell.x - 1; x >= 0; x--) {
+			// if legal
+			if (field[x][cell.y] == '#') break;
 			// fall
 			Cell fell = fall(new Cell(x, cell.y, cell.flips, cell.dir));
 			// make sure the space is legal
@@ -86,6 +89,8 @@ public class gravity {
 		}
 		// check right
 		for (int x = cell.x + 1; x < N; x++) {
+			// if legal
+			if (field[x][cell.y] == '#') break;
 			// fall
 			Cell fell = fall(new Cell(x, cell.y, cell.flips, cell.dir));
 			// make sure the space is legal
