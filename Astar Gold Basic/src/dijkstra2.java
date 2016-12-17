@@ -72,3 +72,11 @@ public class dijkstra2 {
 	}
 
 }
+
+class Vertex {
+	int index, distance;
+	public Vertex(int i, int d) {
+		index = i;
+		distance = d;
+	}
+}

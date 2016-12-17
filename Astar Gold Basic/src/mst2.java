@@ -66,3 +66,11 @@ public class mst2 {
 	}
 
 }
+
+class vertex {
+	int index, distance;
+	public vertex(int i, int d) {
+		index = i;
+		distance = d;
+	}
+}
