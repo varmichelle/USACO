@@ -56,6 +56,9 @@ public class gravity {
 			if (next.x != -1 && next.y != -1) push(next);
 		}
 		
+		// print -1 if unreachable
+		System.out.println(-1);
+		
 	}
 	
 	// returns the position after falling due to gravity ((-1,-1) if fail)
