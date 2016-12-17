@@ -83,23 +83,31 @@ public class gravity {
 	// push all nodes with that flip
 	public static void push(Cell cell) {
 		// check left
+		int y = cell.y;
 		for (int x = cell.x - 1; x >= 0; x--) {
 			// if legal
-			if (field[x][cell.y] == '#') break;
+			if (field[x][y] == '#') break;
 			// fall
-			Cell fell = fall(new Cell(x, cell.y, cell.flips, cell.dir));
+			Cell fell = fall(new Cell(x, y, cell.flips, cell.dir));
 			// make sure the space is legal
-			if (fell.x != -1 && fell.y != -1) q.add(fell);
+			if (fell.x != -1 && fell.y != -1) {
+				q.add(fell);
+				y = fell.y;
+			}
 			else break;
 		}
 		// check right
+		y = cell.y;
 		for (int x = cell.x + 1; x < N; x++) {
 			// if legal
 			if (field[x][cell.y] == '#') break;
 			// fall
 			Cell fell = fall(new Cell(x, cell.y, cell.flips, cell.dir));
 			// make sure the space is legal
-			if (fell.x != -1 && fell.y != -1) q.add(fell);
+			if (fell.x != -1 && fell.y != -1) {
+				q.add(fell);
+				y = fell.y;
+			}
 			else break;
 		}
 	}
