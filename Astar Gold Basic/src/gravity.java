@@ -100,9 +100,9 @@ public class gravity {
 		y = cell.y;
 		for (int x = cell.x + 1; x < N; x++) {
 			// if legal
-			if (field[x][cell.y] == '#') break;
+			if (field[x][y] == '#') break;
 			// fall
-			Cell fell = fall(new Cell(x, cell.y, cell.flips, cell.dir));
+			Cell fell = fall(new Cell(x, y, cell.flips, cell.dir));
 			// make sure the space is legal
 			if (fell.x != -1 && fell.y != -1) {
 				q.add(fell);
