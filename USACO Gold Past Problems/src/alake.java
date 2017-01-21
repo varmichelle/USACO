@@ -8,6 +8,8 @@ public class alake {
 		Scanner scan = new Scanner(new File("alake.in.txt"));
 		PrintStream out = new PrintStream(new File("alake.out.txt"));		
 		
+		
+		
 	}
 
 }

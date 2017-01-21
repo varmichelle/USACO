@@ -3,8 +3,9 @@ import java.util.*;
 
 public class checklist {
 	
-	public static int H, G, min = 999999999, limit = 999999999;
-	public static int[][] hpos, gpos;
+	public static final int INF = 999999999;
+	public static int H, G, min = INF, limit = INF;
+	public static int[][] hpos, gpos, dp_g, dp_h;
 	
 	public static void main (String[] args) throws FileNotFoundException {
 		
@@ -25,64 +26,67 @@ public class checklist {
 			gpos[i][0] = in.nextInt();
 			gpos[i][1] = in.nextInt();
 		}
-		recurse(1,0,hpos[0][0], hpos[0][1],0);
-		System.out.println(limit);
-		dfs(1,0,hpos[0][0], hpos[0][1],0);
-		System.out.println(min);
 		
-	}
-	
-	public static void dfs(int nh, int ng, int px, int py, int energy) {
-		// termination condition
-		if (ng == G && nh == H - 1) {
-			energy += (int) (Math.pow(px - hpos[H-1][0], 2) + Math.pow(py - hpos[H-1][1], 2));
-			min = Math.min(min, energy);
-			return;
-		}
-		if (nh < H-1) {
-			int newEnergy = energy + (int) (Math.pow(px - hpos[nh][0], 2) + Math.pow(py - hpos[nh][1], 2));
-			dfs(nh + 1, ng, hpos[nh][0], hpos[nh][1], newEnergy);
-		}
-		if (ng < G) {
-			int newEnergy = energy + (int) (Math.pow(px - gpos[ng][0], 2) + Math.pow(py - gpos[ng][1], 2));
-			dfs(nh, ng + 1, gpos[ng][0], gpos[ng][1], newEnergy);
-		}
-	}
-	
-	public static void recurse(int nh, int ng, int px, int py, int energy) {
-		// termination condition
-		if (ng == G && nh == H - 1) {
-			energy += (int) (Math.pow(px - hpos[H-1][0], 2) + Math.pow(py - hpos[H-1][1], 2));
-			limit = energy;
-			return;
-		}
-		int hdist = (int) (Math.pow(px - hpos[nh][0], 2) + Math.pow(py - hpos[nh][1], 2));
-		int gdist = (int) (Math.pow(px - gpos[ng][0], 2) + Math.pow(py - gpos[ng][1], 2));
-		boolean hworks = false, gworks = false;
-		if (nh < H-1) hworks = true;
-		if (ng < G) gworks = true;
-		if (gworks && hworks) {
-			if (gdist < hdist) {
-				// do g
-				int newEnergy = energy + (int) (Math.pow(px - gpos[ng][0], 2) + Math.pow(py - gpos[ng][1], 2));
-				dfs(nh, ng + 1, gpos[ng][0], gpos[ng][1], newEnergy);
-			} else {
-				// do h
-				int newEnergy = energy + (int) (Math.pow(px - hpos[nh][0], 2) + Math.pow(py - hpos[nh][1], 2));
-				dfs(nh + 1, ng, hpos[nh][0], hpos[nh][1], newEnergy);
+		/*
+		 * DP solution
+		 * Define h(n,m) = min energy needed to visit n h's and m g's and end on an h
+		 * Define g(n,m) = min energy needed to visit n h's and m g's and end on a g
+		 * We seek h(H,G)
+		 * Recurrence: h(n,m) = min[h(n-1,m)+dist[h[n-1]][h[n]],g(n-1,m)+dist[g[m]][h[n]]
+		 * Mirror for g(n,m)
+		 * Base case h(1,0)=0
+		 */
+		dp_g = new int[H+1][G+1];
+		dp_h = new int[H+1][G+1];
+		for (int h = 0; h <= H; h++) {
+			for (int g = 0; g <= G; g++) {
+				dp_g[h][g] = -1;
+				dp_h[h][g] = -1;
 			}
 		}
-		else if (nh < H-1) {
-			hworks = true;
-			int newEnergy = energy + (int) (Math.pow(px - hpos[nh][0], 2) + Math.pow(py - hpos[nh][1], 2));
-			dfs(nh + 1, ng, hpos[nh][0], hpos[nh][1], newEnergy);
-		}
-		else if (ng < G) {
-			gworks = true;
-			int newEnergy = energy + (int) (Math.pow(px - gpos[ng][0], 2) + Math.pow(py - gpos[ng][1], 2));
-			dfs(nh, ng + 1, gpos[ng][0], gpos[ng][1], newEnergy);
-		}
+		dp_h[1][0] = 0;
+		int energy = recurse(H, G, true);
+		System.out.println(energy);
 		
+	}
+	
+	public static int recurse(int h, int g, boolean endOnH) {
+		System.out.println(h+" "+g+" "+endOnH);
+		if (h == 0) return INF;
+		// want to compute dp_h(h,g)
+		if (endOnH) {
+			if (dp_h[h][g] != -1) {
+				System.out.println("value is " + dp_h[h][g]);
+				return dp_h[h][g];
+			}
+			else {
+				int hAnswer = INF;
+				if (h >= 2) hAnswer = (int) (recurse(h-1,g,true) + Math.pow(hpos[h-2][0]-hpos[h-1][0],2) + Math.pow(hpos[h-2][1]-hpos[h-1][1],2));
+				int gAnswer = INF;
+				if (g >= 1 && h >= 1) gAnswer = (int) (recurse(h-1,g,false) + Math.pow(gpos[g-1][0]-hpos[h-1][0],2) + Math.pow(gpos[g-1][1]-hpos[h-1][1],2));
+				int min = Math.min(hAnswer, gAnswer);
+				System.out.println("h min is " + min);
+				if (min != INF) dp_h[h][g] = min;
+				return dp_h[h][g];
+			}
+		}
+		// want to compute dp_g(h,g)
+		else {
+			if (dp_g[h][g] != -1) {
+				System.out.println(dp_g[h][g]);
+				return dp_g[h][g];
+			}
+			else {
+				int hAnswer = INF;
+				if (h >= 2 && g >= 1) hAnswer = (int) (recurse(h,g-1,false) + Math.pow(hpos[h-2][0]-gpos[g-1][0],2) + Math.pow(hpos[h-2][1]-gpos[g-1][1],2));
+				int gAnswer = INF;
+				if (g >= 2) gAnswer = (int) (recurse(h,g-1,true) + Math.pow(gpos[g-2][0]-gpos[g-1][0],2) + Math.pow(gpos[g-2][1]-gpos[g-1][1],2));
+				int min = Math.min(hAnswer, gAnswer);
+				System.out.println("g min is " + min);
+				if (min != INF) dp_g[h][g] = min;
+				return dp_g[h][g];
+			}
+		}
 	}
 	
 }
