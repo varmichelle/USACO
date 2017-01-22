@@ -34,8 +34,8 @@ public class alake {
 		
 		long current = 0;
 		
-		// continue until the current level is one of the walls (finished)
-		while (heights[index] < INF) {
+		// while in bounds
+		while (index > 0 && index <= N) {
 			// calculate the time it takes to fill the current level
 			times[index] = current + widths[index];
 			// delete the current level (merge)
