@@ -13,6 +13,7 @@ public class hopscotch {
 		int K = in.nextInt();
 		int[][] grid = new int[R][C];
 		long[][] dp = new long[R][C];
+		// base case
 		dp[0][0] = 1;
 		for (int r = 0; r < R; r++) {
 			for (int c = 0; c < C; c++) {
@@ -22,12 +23,13 @@ public class hopscotch {
 					for (int j = 0; j < c; j++) {
 						// make sure the cow is landing on a different number
 						if (grid[i][j] != grid[r][c]) dp[r][c] += dp[i][j];
+						dp[r][c] %= 1000000007;
 					}
 				}
 			}
 		}
 		
-		System.out.println(dp[R-1][C-1] % 1000000007);
+		System.out.println(dp[R-1][C-1]);
 		
 	}
 
