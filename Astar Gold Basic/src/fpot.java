@@ -10,6 +10,9 @@ public class fpot {
 		PrintStream out = new PrintStream(new File("fpot.out.txt"));
 		
 		// read in input
+		int N = in.nextInt();
+		int D = in.nextInt();
+		
 
 	}
 

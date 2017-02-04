@@ -1,4 +1,7 @@
 import java.util.*;
+
+import javax.management.Query;
+
 import java.io.*;
 
 public class perimeter {
@@ -31,27 +34,25 @@ public class perimeter {
 				start_y = y;
 			}
 		}
-		recurse(start_x+1, start_y);
+		Queue<Coordinate> q = new LinkedList<Coordinate>();
+		q.add(new Coordinate(start_x+1, start_y));
+		while (!q.isEmpty()) {
+			Coordinate c = q.remove();
+			if (isolated(c.x, c.y)) continue;
+			// if haybale, increment perimeter
+			if (haybales.contains(c)) {
+				perimeter++;
+				continue;
+			}
+			if (visited.contains(new Coordinate(c.x-min_x, c.y-min_y))) continue;
+			visited.add(new Coordinate(c.x-min_x, c.y-min_y));
+			q.add(new Coordinate(c.x+1,c.y));
+			q.add(new Coordinate(c.x-1,c.y));
+			q.add(new Coordinate(c.x,c.y+1));
+			q.add(new Coordinate(c.x,c.y-1));
+		}
 		System.out.println(perimeter);
 
-	}
-	
-	static void recurse(int x, int y) {
-		// if isolated, return (to stay close to the haybales)
-		if (isolated(x,y)) return;
-		else {
-			// if haybale, increment perimeter
-			if (haybales.contains(new Coordinate(x, y))) {
-				perimeter++;
-				return;
-			}
-			if (visited.contains(new Coordinate(x-min_x,y-min_y))) return;
-			else visited.add(new Coordinate(x-min_x,y-min_y));
-			recurse(x+1,y);
-			recurse(x-1,y);
-			recurse(x,y+1);
-			recurse(x,y-1);
-		}
 	}
 	
 	static boolean isolated(int x, int y) {
