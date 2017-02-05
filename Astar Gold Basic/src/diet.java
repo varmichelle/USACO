@@ -16,9 +16,9 @@ public class diet {
 		
 		boolean[] dp = new boolean[H+1];
 		// base case: adding the first item
-		dp[V[1]] = true;
+		dp[0] = true;
 		
-		for (int y = 2; y <= N; y++) {
+		for (int y = 1; y <= N; y++) {
 			for (int x = H; x >= V[y]; x--) {
 				dp[x] = dp[x] || dp[x-V[y]];
 			}
