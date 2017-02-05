@@ -24,8 +24,6 @@ public class diet {
 				dp[x][y] = dp[x][y-1];
 				// check if possible to add the yth item
 				if (x-V[y] >= 0) dp[x][y] = dp[x][y] || dp[x-V[y]][y-1];
-				// progressively fill with max of current and previous
-				dp[x][y] = dp[x][y] || dp[x-1][y];
 			}
 		}
 		for (int i = H; i >= 0; i--) {
