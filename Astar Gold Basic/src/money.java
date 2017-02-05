@@ -24,14 +24,19 @@ public class money {
 		for (int y = 2; y <= N; y++) {
 			for (int x = 1; x <= V; x++) {
 				// copy everything from previous row
-				dp[x][y] = dp[x][y-1];
+				dp[x][y] += dp[x][y-1];
 				// add coin y
 				for (int j = coins[y]; j <= V; j+= coins[y]) {
-					if (x-j >= 0 && dp[x-j][y-1] > 0) dp[j][y]+= dp[x-j][y-1];
+					if (x-j >= 0) dp[j][y]+= dp[x-j][y-1];
 				}
 			}
 		}
-		System.out.println(dp[V][N]);
+		for (int y = 1; y <= N; y++) {
+			for (int x = 1; x <= V; x++) {
+				System.out.print(dp[x][y] + " ");
+			}
+			System.out.println();
+		}
 		
 	}
 
